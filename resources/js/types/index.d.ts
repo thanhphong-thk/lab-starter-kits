@@ -41,3 +41,19 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+import { PageProps as InertiaPageProps } from '@inertiajs/inertia';
+
+export type PageProps<T = {}> = InertiaPageProps & {
+  auth?: {
+    user: {
+      id: number;
+      name: string;
+      email: string;
+    };
+  };
+  flash?: {
+    success?: string;
+    error?: string;
+  };
+} & T;
