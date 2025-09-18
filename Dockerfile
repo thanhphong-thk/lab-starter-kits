@@ -1,24 +1,25 @@
 FROM php:8.4-fpm
 
+# Cài thư viện hệ thống cần thiết cho Laravel & GD
+RUN apt-get update && apt-get install -y \
+    libpng-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
+    libonig-dev \
+    libxml2-dev \
+    zip \
+    unzip \
+    git \
+    curl \
+ && docker-php-ext-configure gd --with-freetype --with-jpeg \
+ && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd
+
 WORKDIR /var/www/html
 
-RUN apt-get update && apt-get install -y \
-    git \
-    unzip \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    libwebp-dev \
-    zip \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
-    && docker-php-ext-install -j$(nproc) gd pdo pdo_mysql opcache
+# Copy source code
+COPY . .
 
-COPY . /var/www/html
+# Cài Composer
+COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
 
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 775 /var/www/html/storage \
-    && chmod -R 775 /var/www/html/bootstrap/cache
-
-EXPOSE 9000
-
-CMD ["php-fpm"]
+RUN composer install
