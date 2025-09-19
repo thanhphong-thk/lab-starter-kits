@@ -7,7 +7,10 @@ services:
       dockerfile: Dockerfile
     container_name: lab_starter-kits
     volumes:
-      - .:/var/www/html
+      - .:/var/www/lab-starter-kits
+    working_dir: /var/www/lab-starter-kits
+    expose:
+      - "9000"
     networks:
       - laravel
     depends_on:
@@ -42,7 +45,7 @@ services:
       - "8080:80"
     volumes:
       - ./docker/nginx:/etc/nginx/conf.d
-      - ./:/var/www/html
+      - .:/var/www/lab-starter-kits
     depends_on:
       - app
     networks:
