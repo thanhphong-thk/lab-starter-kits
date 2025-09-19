@@ -42,7 +42,7 @@ services:
     image: nginx:latest
     container_name: lab_starter-kits_nginx
     ports:
-      - "8080:80"
+      - "80:80"
     volumes:
       - ./docker/nginx:/etc/nginx/conf.d
       - .:/var/www/lab-starter-kits
