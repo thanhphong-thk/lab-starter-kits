@@ -12,8 +12,8 @@ php artisan key:generate --force
 echo "📦 Running migrations..."
 php artisan migrate --force
 
-echo "🌱 Seeding database..."
-php artisan db:seed --force
+# echo "🌱 Seeding database..."
+# php artisan db:seed --force
 
 echo "🚀 Starting PHP-FPM..."
 exec php-fpm
