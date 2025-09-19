@@ -12,14 +12,27 @@ RUN apt-get update && apt-get install -y \
     git \
     curl \
  && docker-php-ext-configure gd --with-freetype --with-jpeg \
- && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd
+ && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd \
+ && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# Thư mục làm việc
 WORKDIR /var/www/html
 
 # Copy source code
 COPY . .
 
-# Cài Composer
+# Copy composer
 COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
 
-RUN composer install
+# Cài dependencies PHP (Laravel)
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader
+
+# Copy entrypoint script
+COPY ./docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# Dùng entrypoint custom
+ENTRYPOINT ["entrypoint.sh"]
+
+# Chạy php-fpm
+CMD ["php-fpm"]

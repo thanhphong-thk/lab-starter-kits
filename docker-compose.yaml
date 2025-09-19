@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: lab_starter-kits
+    container_name: lab_starter-kits_app
     volumes:
       - .:/var/www/html
     networks:
@@ -29,7 +29,7 @@ services:
       MYSQL_USER: ${DB_USERNAME}
       MYSQL_PASSWORD: ${DB_PASSWORD}
     ports:
-      - "3307:3306"
+      - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
@@ -39,10 +39,10 @@ services:
     image: nginx:latest
     container_name: lab_starter-kits_nginx
     ports:
-      - "8080:80"
+      - "80:80"
     volumes:
       - ./docker/nginx:/etc/nginx/conf.d
-      - ./:/var/www/html
+      - .:/var/www/html
     depends_on:
       - app
     networks:
