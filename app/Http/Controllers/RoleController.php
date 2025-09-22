@@ -18,6 +18,7 @@ class RoleController extends Controller
     {
         $this->roleService = $roleService;
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -45,7 +46,6 @@ class RoleController extends Controller
         }
     }
 
-
     // RoleController.php
     public function update(Request $request, $id)
     {
@@ -65,13 +65,12 @@ class RoleController extends Controller
         }
     }
 
-
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(int $roleId)
     {
-        try{
+        try {
             $role = Role::find($roleId);
             $role->delete();
 
